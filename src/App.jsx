@@ -1,77 +1,194 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom';
+import { PokemonProvider, usePokemon } from './contexts/PokemonContext';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
-import PokemonList from './components/PokemonList';
-import LoadingSpinner from './components/LoadingSpinner';
-import ErrorMessage from './components/ErrorMessage';
-import EmptyState from './components/EmptyState';
-import './App.css';
+import PokemonCard from './components/PokemonCard';
+import PokemonDetail from './components/PokemonDetail';
+import FavoritesList from './components/FavoritesList';
+import ComparisonTool from './components/ComparisonTool';
+import Pagination from './components/Pagination';
+import SkeletonLoader from './components/SkeletonLoader';
+import ErrorBoundary from './components/ErrorBoundary';
+// import './App.css';
+import './styles/General.css';
+import './styles/Header.css';
+import './styles/Layout.css';
+import './styles/Sidebar.css';
+import './styles/MainContent.css';
+import './styles/SearchBar.css';
+import './styles/PokemonList.css';
+import './styles/PokemonCard.css';
+import './styles/PokemonSmallCard.css';
+import './styles/PokemonDetail.css';
+import './styles/FavoritesList.css';
+import './styles/ComparisonTool.css';
+import './styles/Pagination.css';
+import './styles/DashboardButton.css';
+import './styles/SkeletonLoader.css';
+import './styles/ErrorBoundary.css';
 
-function App() {
-  const [pokemonList, setPokemonList] = useState([]);
-  const [types, setTypes] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState('All');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const PokemonList = () => {
+  const { pokemons, filteredPokemons, setFilteredPokemons, loading, error, page, setPage, itemsPerPage, sortBy, filters, searchTerm } = usePokemon();
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // Fetch Pokémon list
-        const pokemonRes = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150');
-        if (!pokemonRes.ok) throw new Error('Failed to fetch Pokémon');
-        const pokemonData = await pokemonRes.json();
-        const pokemonDetails = await Promise.all(
-          pokemonData.results.map(async (p) => {
-            const res = await fetch(p.url);
-            if (!res.ok) throw new Error(`Failed to fetch ${p.name}`);
-            return res.json();
-          })
+    const applyFiltersAndSort = () => {
+      let result = [...pokemons];
+      result = result.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      if (filters.length > 0) {
+        result = result.filter(pokemon =>
+          filters.every(filter => pokemon.types.some(t => t.type.name === filter))
         );
-        setPokemonList(pokemonDetails);
-
-        // Fetch types
-        const typesRes = await fetch('https://pokeapi.co/api/v2/type');
-        if (!typesRes.ok) throw new Error('Failed to fetch types');
-        const typesData = await typesRes.json();
-        setTypes(typesData.results.map(t => t.name));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
       }
+      result.sort((a, b) => {
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        return a.id - b.id;
+      });
+      setFilteredPokemons(result);
     };
-    fetchData();
-  }, []);
+    applyFiltersAndSort();
+  }, [searchTerm, sortBy, filters, pokemons]);
 
-  const filteredPokemon = pokemonList.filter(pokemon => {
-    const matchesName = pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = selectedType === 'All' || pokemon.types.some(t => t.type.name === selectedType);
-    return matchesName && matchesType;
-  });
+  const paginatedPokemons = filteredPokemons.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  if (loading) return <SkeletonLoader />;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <div className="app">
-      <Header />
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        selectedType={selectedType}
-        setSelectedType={setSelectedType}
-        types={types}
-      />
-      {loading && <LoadingSpinner />}
-      {error && <ErrorMessage message={error} />}
-      {!loading && !error && (
-        filteredPokemon.length > 0 ? (
-          <PokemonList pokemon={filteredPokemon} />
+    <div className="main-content">
+      <h2>Pokémon List</h2>
+      <SearchBar />
+      <div className="pokemon-list">
+        {paginatedPokemons.length ? (
+          paginatedPokemons.map(pokemon => (
+            <PokemonCard
+              key={pokemon.id}
+              pokemon={pokemon}
+              onClick={() => setSelectedPokemon(pokemon)}
+            />
+          ))
         ) : (
-          <EmptyState />
-        )
+          <p>No Pokémon found.</p>
+        )}
+      </div>
+      {selectedPokemon && (
+        <PokemonDetail
+          pokemon={selectedPokemon}
+          onClose={() => setSelectedPokemon(null)}
+        />
+      )}
+      <Pagination />
+    </div>
+  );
+};
+
+const RandomPokemon = () => {
+  const { pokemons } = usePokemon();
+  const [randomPokemon, setRandomPokemon] = React.useState(null);
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
+
+  const handleRandom = () => {
+    if (pokemons.length) {
+      const randomId = Math.floor(Math.random() * pokemons.length) + 1;
+      const pokemon = pokemons.find(p => p.id === randomId);
+      setRandomPokemon(pokemon);
+    }
+  };
+
+  return (
+    <div className="main-content">
+      <h2>Random Pokémon</h2>
+      <button onClick={handleRandom} className="dashboard-button" aria-label="Load a random Pokémon">
+        Generate Random Pokémon
+      </button>
+      {randomPokemon && (
+        <div className="pokemon-list single-card">
+          <PokemonCard
+            pokemon={randomPokemon}
+            onClick={() => setSelectedPokemon(randomPokemon)}
+          />
+        </div>
+      )}
+      {selectedPokemon && (
+        <PokemonDetail
+          pokemon={selectedPokemon}
+          onClose={() => setSelectedPokemon(null)}
+        />
       )}
     </div>
+  );
+};
+
+const Sidebar = () => (
+  <aside className="sidebar">
+    <h3 className="sidebar-title">Dashboard</h3>
+    <nav className="sidebar-nav">
+      <NavLink to="/" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <span className="link-icon">📜</span> Pokémon List
+      </NavLink>
+      <NavLink to="/favorites" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <span className="link-icon">❤️</span> Favorites
+      </NavLink>
+      <NavLink to="/compare" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <span className="link-icon">⚖️</span> Compare Pokémon
+      </NavLink>
+      <NavLink to="/random" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <span className="link-icon">🎲</span> Random Pokémon
+      </NavLink>
+    </nav>
+  </aside>
+);
+
+function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  return (
+    <Router basename="/pokemonExplorer">
+      <PokemonProvider>
+        <FavoritesProvider>
+          <ErrorBoundary>
+            <div className="dashboard">
+              <Header />
+              <div className="layout">
+                <button className="sidebar-toggle" onClick={toggleSidebar}>
+                  {isSidebarOpen ? '✖' : '☰'}
+                </button>
+                <Sidebar className={isSidebarOpen ? 'sidebar' : 'sidebar hidden'} />
+                <main>
+                  <Routes>
+                    <Route path="/" element={<PokemonList />} />
+                    <Route path="/favorites" element={
+                      <div className="main-content">
+                        <h2>Favorites</h2>
+                        <FavoritesList />
+                      </div>
+                    } />
+                    <Route path="/compare" element={
+                      <div className="main-content">
+                        <h2>Compare Pokémon</h2>
+                        <ComparisonTool />
+                      </div>
+                    } />
+                    <Route path="/random" element={<RandomPokemon />} />
+                  </Routes>
+                </main>
+              </div>
+            </div>
+          </ErrorBoundary>
+        </FavoritesProvider>
+      </PokemonProvider>
+    </Router>
   );
 }
 

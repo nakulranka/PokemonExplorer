@@ -1,0 +1,14 @@
+/* Layout Styles */
+.layout {
+    display: flex;
+    flex: 1;
+    margin-top: 96px; /* Offset for the fixed header height (1.5rem padding * 2 + 2.5rem font-size + margin) */
+    height: calc(100vh - 96px); /* Adjust for header height */
+    position: relative;
+  }
+  
+  @media (max-width: 768px) {
+    .layout {
+      flex-direction: column;
+    }
+  }

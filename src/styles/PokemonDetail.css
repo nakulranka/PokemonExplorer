@@ -1,0 +1,70 @@
+/* PokemonDetail Overlay Styles */
+.pokemon-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 34, 56, 0.8); /* Dark navy overlay */
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .pokemon-detail {
+    padding: 2rem;
+    max-width: 700px;
+    width: 90%;
+    background: linear-gradient(135deg, #2c3e50, #37474f); /* Gradient background */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    position: relative;
+    animation: slideIn 0.5s ease;
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .pokemon-detail h2 {
+    margin-top: 0;
+    text-transform: capitalize;
+    color: #d5e1e8; /* Light blue-gray text */
+  }
+  
+  .pokemon-detail img {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .pokemon-detail div {
+    margin: 0.75rem 0;
+    color: #d5e1e8; /* Light blue-gray text */
+  }
+  
+  .pokemon-detail .back-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(45deg, #6a1b9a, #8e24aa); /* Purple gradient */
+    color: #d5e1e8; /* Light blue-gray text */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .pokemon-detail .back-button:hover {
+    background: linear-gradient(45deg, #8e24aa, #ab47bc); /* Brighter purple on hover */
+    transform: scale(1.05);
+  }

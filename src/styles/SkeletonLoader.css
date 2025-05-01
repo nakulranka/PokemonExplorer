@@ -1,0 +1,37 @@
+/* SkeletonLoader Styles */
+.skeleton {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+  
+  .skeleton-card {
+    background: linear-gradient(135deg, #1a2238, #2c3e50); /* Gradient background */
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  
+  .skeleton-image,
+  .skeleton-text {
+    background: linear-gradient(90deg, #2c3e50 25%, #37474f 50%, #2c3e50 75%); /* Gradient animation */
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  .skeleton-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    border-radius: 50%;
+  }
+  
+  .skeleton-text {
+    height: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 4px;
+  }
+  
+  @keyframes loading {
+    to { background-position: 200% 0; }
+  }

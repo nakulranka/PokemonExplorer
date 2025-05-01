@@ -1,0 +1,49 @@
+/* Main Content Styles */
+main {
+    flex: 1;
+    padding: 2rem;
+    background: #1a2238; /* Dark navy background */
+    overflow: hidden; /* Prevent scrolling in main */
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+  }
+  
+  main.with-hidden-sidebar {
+    margin-left: 0;
+  }
+  
+  @media (max-width: 768px) {
+    main {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(135deg, #2c3e50, #37474f); /* Gradient for main content */
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.5s ease;
+  }
+  
+  .main-content h2 {
+    font-size: 1.8rem;
+    color: #d5e1e8; /* Light blue-gray text */
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(106, 27, 154, 0.3); /* Subtle purple glow */
+  }
+  
+  /* Fade-in animation for main content on route change */
+  main > * {
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }

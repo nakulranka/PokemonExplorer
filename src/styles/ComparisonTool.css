@@ -1,0 +1,107 @@
+/* ComparisonTool Styles */
+.comparison-tool {
+    padding: 1rem;
+    background: linear-gradient(135deg, #1a2238, #2c3e50); /* Gradient background */
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .comparison-selects {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-container {
+    position: relative;
+    width: 200px;
+  }
+  
+  .search-container input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #37474f; /* Darker navy border */
+    border-radius: 6px;
+    background: #2c3e50; /* Dark navy background */
+    color: #d5e1e8; /* Light blue-gray text */
+    font-size: 1rem;
+  }
+  
+  .suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1a2238; /* Dark navy background */
+    border: 1px solid #37474f; /* Darker navy border */
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .suggestions-list li {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    text-transform: capitalize;
+    color: #d5e1e8; /* Light blue-gray text */
+    transition: background 0.3s ease;
+  }
+  
+  .suggestions-list li:hover {
+    background: #6a1b9a; /* Purple background on hover */
+  }
+  
+  .comparison-result {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .comparison-card {
+    background: linear-gradient(135deg, #1a2238, #2c3e50); /* Gradient background */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    width: 250px;
+    text-align: left;
+  }
+  
+  .comparison-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 1rem;
+  }
+  
+  .comparison-details {
+    flex: 1;
+  }
+  
+  .comparison-card h3 {
+    font-size: 1.5rem;
+    color: #d5e1e8; /* Light blue-gray text */
+    margin-bottom: 1rem;
+  }
+  
+  .comparison-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .comparison-card li {
+    padding: 0.5rem 0;
+    color: #d5e1e8; /* Light blue-gray text */
+    font-size: 0.95rem;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }

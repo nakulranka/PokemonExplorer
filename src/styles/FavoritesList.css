@@ -1,0 +1,20 @@
+/* FavoritesList Styles */
+.favorites-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(180px, 1fr)); /* 5 columns per row */
+    gap: 1.5rem;
+    padding: 1rem 0;
+    max-height: calc(100% - 80px); /* Adjust for header */
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .favorites-list::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  
+  @media (max-width: 768px) {
+    .favorites-list {
+      grid-template-columns: repeat(2, minmax(150px, 1fr)); /* 2 columns on mobile */
+    }
+  }

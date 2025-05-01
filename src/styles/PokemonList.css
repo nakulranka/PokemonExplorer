@@ -1,0 +1,24 @@
+/* PokemonList Styles */
+.pokemon-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+    content-visibility: auto;
+    max-height: calc(100% - 200px); /* Adjust for search bar, header, and pagination */
+    overflow-y: auto; /* Scroll if needed */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .pokemon-list::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  
+  .pokemon-list.single-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100% - 120px); /* Adjust for header and button */
+    max-height: calc(100% - 120px);
+    overflow: hidden; /* Prevent scrolling */
+  }

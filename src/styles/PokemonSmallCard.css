@@ -1,0 +1,57 @@
+/* PokemonSmallCard Styles */
+.pokemon-small-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #1a2238, #2c3e50); /* Gradient background */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    padding: 0.5rem;
+    width: 180px; /* Fixed width for 5 per line */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .pokemon-small-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .pokemon-small-card img {
+    width: 60px;
+    height: 60px;
+    margin-right: 1rem;
+  }
+  
+  .pokemon-small-card .small-card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .pokemon-small-card h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #d5e1e8; /* Light blue-gray text */
+    text-transform: capitalize;
+  }
+  
+  .pokemon-small-card p {
+    margin: 0.25rem 0;
+    color: #d5e1e8; /* Light blue-gray text */
+    font-size: 0.85rem;
+  }
+  
+  .pokemon-small-card button {
+    padding: 0.3rem 0.75rem;
+    background: linear-gradient(45deg, #6a1b9a, #8e24aa); /* Purple gradient */
+    color: #d5e1e8; /* Light blue-gray text */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .pokemon-small-card button:hover {
+    background: linear-gradient(45deg, #8e24aa, #ab47bc); /* Brighter purple on hover */
+    transform: scale(1.05);
+  }
